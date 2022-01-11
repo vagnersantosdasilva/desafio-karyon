@@ -24,10 +24,12 @@ public class ClienteController {
 	public ResponseEntity<?> getAll() {
 	    return ResponseEntity.ok().body(clienteService.findAll());
     }
+
 	@GetMapping("cliente/{idCliente}")
 	public ResponseEntity<?> getByIdCliente(@PathVariable Long idCliente) {
 	    return ResponseEntity.ok().body(clienteService.findById(idCliente));
     }
+
 	@PostMapping("cliente")
 	public ResponseEntity<?> create(@RequestBody Cliente createCliente) {
 	    return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.save(createCliente));
