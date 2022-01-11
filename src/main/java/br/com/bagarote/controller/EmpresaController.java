@@ -1,5 +1,6 @@
 package br.com.bagarote.controller;
 
+import br.com.bagarote.service.EmpresaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,24 +19,27 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class EmpresaController {
 	
-	private final EmpresaRepository empresaRepository;
+	private final EmpresaService empresaService;
 	
 	@GetMapping("empresa")
 	public ResponseEntity<?> getaAll() {
-	    return ResponseEntity.ok().body(empresaRepository.findAll());
+	    return ResponseEntity.ok().body(empresaService.findAll());
     }
+
 	@GetMapping("empresa/{idEmpresa}")
 	public ResponseEntity<?> getByIdEmpresa(@PathVariable Long idEmpresa) {
-	    return ResponseEntity.ok().body(empresaRepository.findById(idEmpresa).orElse(null));
+	    return ResponseEntity.ok().body(empresaService.findById(idEmpresa));
     }
+
 	@PostMapping("empresa")
 	public ResponseEntity<?> create(@RequestBody br.com.bagarote.model.Empresa createEmpresa) {
-	    return ResponseEntity.status(HttpStatus.CREATED).body(empresaRepository.save(createEmpresa));
+	    return ResponseEntity.status(HttpStatus.CREATED).body(empresaService.save(createEmpresa));
     }
+
 	@PutMapping("empresa/{idEmpresa}")
 	public ResponseEntity<?> update(@PathVariable Long idEmpresa, @RequestBody Empresa updateEmpresa) {
-		Empresa empresa = empresaRepository.findById(idEmpresa).orElse(null);
+		Empresa empresa = empresaService.findById(idEmpresa);
 		BeanUtils.copyProperties(updateEmpresa, empresa);
-	    return ResponseEntity.status(HttpStatus.CREATED).body(empresaRepository.save(empresa));
+	    return ResponseEntity.status(HttpStatus.CREATED).body(empresaService.save(empresa));
     }
 }

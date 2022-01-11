@@ -1,5 +1,6 @@
 package br.com.bagarote.controller;
 
+import br.com.bagarote.service.ClienteService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,31 +12,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.bagarote.model.Cliente;
-import br.com.bagarote.repository.ClienteRepository;
 import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
 public class ClienteController {
 	
-	private final ClienteRepository clienteRepository;
+	private final ClienteService clienteService;
 	
 	@GetMapping("cliente")
 	public ResponseEntity<?> getAll() {
-	    return ResponseEntity.ok().body(clienteRepository.findAll());
+	    return ResponseEntity.ok().body(clienteService.findAll());
     }
 	@GetMapping("cliente/{idCliente}")
 	public ResponseEntity<?> getByIdCliente(@PathVariable Long idCliente) {
-	    return ResponseEntity.ok().body(clienteRepository.findById(idCliente).orElse(null));
+	    return ResponseEntity.ok().body(clienteService.findById(idCliente));
     }
 	@PostMapping("cliente")
 	public ResponseEntity<?> create(@RequestBody Cliente createCliente) {
-	    return ResponseEntity.status(HttpStatus.CREATED).body(clienteRepository.save(createCliente));
+	    return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.save(createCliente));
     }
 	
 	@PutMapping("cliente/{idCliente}")
 	public ResponseEntity<?> update(@PathVariable Long idEmpresa, @PathVariable Long idCliente, @RequestBody Cliente updateCliente) {
-		Cliente cliente =  clienteRepository.findById(idCliente).orElse(null);
+		Cliente cliente =  clienteService.findById(idCliente);
 		if(cliente == null)
 			return ResponseEntity.status(HttpStatus.OK).body(null);
 		BeanUtils.copyProperties(updateCliente, cliente);

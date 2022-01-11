@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import br.com.bagarote.model.Produto;
-import br.com.bagarote.repository.ProdutoRepository;
+
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -19,23 +18,19 @@ import lombok.AllArgsConstructor;
 public class ProdutoController {
 
 	private final ProdutoService produtoService;
-	private final ProdutoRepository produtoRepository;
-	
+
 	@GetMapping("produto")
 	public ResponseEntity<?> getAll() {
-	    //produtoRepository.findAll()
 		return ResponseEntity.ok().body(produtoService.findAll());
     }
 
 	@GetMapping("produto/{idProduto}")
 	public ResponseEntity<?> getByIdProduto(@PathVariable Long idProduto) {
-		//produtoRepository.findById(idProduto).orElse(null)
 		return ResponseEntity.ok().body(produtoService.findById(idProduto));
     }
 
 	@PostMapping("produto")
 	public ResponseEntity<?> create(@RequestBody Produto createProduto) {
-		//produtoRepository.save(createProduto)
 		return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.save(createProduto));
     }
 	@PutMapping("produto/{idProduto}")

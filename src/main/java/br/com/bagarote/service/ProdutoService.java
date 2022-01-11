@@ -27,6 +27,6 @@ public class ProdutoService {
     }
 
     public Object save(Produto createProduto) {
-        return null;
+        return produtoRepository.save(createProduto);
     }
 }
