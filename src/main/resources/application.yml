@@ -16,6 +16,6 @@ spring:
       ddl-auto: none
   datasource:
     url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/db_pdv}
-    username: ${DATASOURCE_USERNAME:dev}
-    password: ${DATASOURCE_PASSWORD:123}
+    username: ${DATASOURCE_USERNAME:admin}
+    password: ${DATASOURCE_PASSWORD:abc@123}
     driver-class-name: org.postgresql.Driver

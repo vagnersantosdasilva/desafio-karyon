@@ -1,5 +1,6 @@
 package br.com.bagarote.controller;
 
+import br.com.bagarote.service.ProdutoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,25 +17,32 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 public class ProdutoController {
+
+	private final ProdutoService produtoService;
 	private final ProdutoRepository produtoRepository;
 	
 	@GetMapping("produto")
 	public ResponseEntity<?> getAll() {
-	    return ResponseEntity.ok().body(produtoRepository.findAll());
+	    //produtoRepository.findAll()
+		return ResponseEntity.ok().body(produtoService.findAll());
     }
+
 	@GetMapping("produto/{idProduto}")
 	public ResponseEntity<?> getByIdProduto(@PathVariable Long idProduto) {
-	    return ResponseEntity.ok().body(produtoRepository.findById(idProduto).orElse(null));
+		//produtoRepository.findById(idProduto).orElse(null)
+		return ResponseEntity.ok().body(produtoService.findById(idProduto));
     }
+
 	@PostMapping("produto")
 	public ResponseEntity<?> create(@RequestBody Produto createProduto) {
-	    return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(createProduto));
+		//produtoRepository.save(createProduto)
+		return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.save(createProduto));
     }
 	@PutMapping("produto/{idProduto}")
 	public ResponseEntity<?> update(@PathVariable Long idProduto, @RequestBody Produto updateProduto) {
-		Produto produto = produtoRepository.findById(idProduto).orElse(null);
+		Produto produto = produtoService.findById(idProduto);
 		if(produto == null)
 			ResponseEntity.status(HttpStatus.OK).build();
-	    return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto));
+	    return ResponseEntity.status(HttpStatus.OK).body(produtoService.save(produto));
     }
 }
