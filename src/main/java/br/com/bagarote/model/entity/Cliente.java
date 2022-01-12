@@ -13,12 +13,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 @Entity
 public class Cliente implements Serializable{
+
 	private static final long serialVersionUID = 1L;
 	@Id
 	@SequenceGenerator(name = "SequenceCliente", sequenceName = "SEQ_CLIENTE", allocationSize = 1)

@@ -41,6 +41,7 @@ public class ProdutoService {
         return produtoRepository.save(produto);
     }
 
+    //TODO:Verificar se id de url é igual a id do body
     public Produto update(Long idProduto, UpdateProdutoRequest updateProduto){
         Produto produtoExistente = produtoRepository.findById(idProduto).orElse(null);
         if (produtoExistente ==null) throw new RuntimeException("Id de produto não pode ser nulo");

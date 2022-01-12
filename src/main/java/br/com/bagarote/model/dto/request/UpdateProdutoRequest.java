@@ -17,11 +17,11 @@ import java.util.Objects;
 @AllArgsConstructor
 public class UpdateProdutoRequest {
 
-    @NotNull(message = "Campo não pode ser nulo")
+    @NotNull(message = "Campo idProduto não pode ser nulo. ")
     private Long idProduto;
 
-    @NotNull(message = "campoNulo")
-    @NotEmpty(message = "campoEmBranco")
+    @NotNull(message = "Campo produto não pode ser nulo. ")
+    @NotEmpty(message = "Campo produto não pode ser vazio. ")
     private String produto;
 
     private String descricao;
@@ -30,7 +30,7 @@ public class UpdateProdutoRequest {
 
     private String imagemProduto;
 
-    @NotNull(message = "Campo não pode ser nulo")
+    @NotNull(message = "Campo idEmpresa não pode ser nulo. ")
     private Long idEmpresa;
 
     public byte[] getImagemProdutoByte() {

@@ -12,6 +12,7 @@ public class ExceptionHandler {
 
 
 
+
     @org.springframework.web.bind.annotation.ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> handleResourceNotFound(ResourceNotFoundException ex){
         ErrorDetails error = new ErrorDetails();

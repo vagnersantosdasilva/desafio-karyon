@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import br.com.bagarote.service.ProdutoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.bagarote.model.entity.Produto;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.stream.Collectors;
 
@@ -55,15 +57,28 @@ public class ProdutoController {
     }
 
 	@PostMapping("produto")
-	public ResponseEntity<?> create(@RequestBody  @Valid CreateProdutoRequest createProduto) {
+	public ResponseEntity<?> create(
+			@RequestBody  @Valid CreateProdutoRequest createProduto,
+			BindingResult result
+	) throws Exception {
+		if (result.hasErrors()){
+			throw new Exception(result.getAllErrors().get(0).getDefaultMessage());
+		}
 		Produto produto = modelMapper.map(createProduto, Produto.class);
 		ProdutoResponse response = modelMapper.map(produtoService.create(produto), ProdutoResponse.class);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 	@PutMapping("produto/{idProduto}")
-	public ResponseEntity<?> update(@PathVariable Long idProduto,@RequestBody  @Valid  UpdateProdutoRequest updateProduto) {
-		//Produto produtoUpdate = modelMapper.map(updateProduto, Produto.class);
+	public ResponseEntity<?> update(
+			@PathVariable Long idProduto,
+			@RequestBody  @Valid  UpdateProdutoRequest updateProduto,
+			BindingResult result
+	) throws Exception {
+
+		if (result.hasErrors()){
+			throw new Exception(result.getAllErrors().get(0).getDefaultMessage());
+		}
 		ProdutoResponse response = modelMapper.map(produtoService.update(idProduto,updateProduto), ProdutoResponse.class);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
     }
