@@ -1,10 +1,9 @@
 package br.com.bagarote.service;
 
-import br.com.bagarote.model.Venda;
+import br.com.bagarote.model.entity.Venda;
 import br.com.bagarote.repository.VendaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class VendaService {

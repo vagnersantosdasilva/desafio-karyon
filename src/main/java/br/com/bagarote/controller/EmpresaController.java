@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.bagarote.model.Empresa;
-import br.com.bagarote.repository.EmpresaRepository;
+import br.com.bagarote.model.entity.Empresa;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -32,7 +31,7 @@ public class EmpresaController {
     }
 
 	@PostMapping("empresa")
-	public ResponseEntity<?> create(@RequestBody br.com.bagarote.model.Empresa createEmpresa) {
+	public ResponseEntity<?> create(@RequestBody Empresa createEmpresa) {
 	    return ResponseEntity.status(HttpStatus.CREATED).body(empresaService.save(createEmpresa));
     }
 

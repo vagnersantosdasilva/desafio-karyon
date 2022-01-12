@@ -1,15 +1,11 @@
-package br.com.bagarote.model;
+package br.com.bagarote.model.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Base64;
+import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,6 +30,14 @@ public class Produto implements Serializable{
 	private BigDecimal valorBase;
 	private byte[] imagemProduto;
 	@ManyToOne
-	@JoinColumn(name = "ID_EMPRESA")
+	@JoinColumn(name = "ID_EMPRESA" ,referencedColumnName="id_empresa")
 	private Empresa empresa;
+
+	@Transient
+	public String getImagemProdutoBase64() {
+		if(Objects.nonNull(this.imagemProduto)) {
+			return Base64.getEncoder().encodeToString(this.imagemProduto);
+		}
+		return "";
+	}
 }

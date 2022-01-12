@@ -1,6 +1,6 @@
 package br.com.bagarote.service;
 
-import br.com.bagarote.model.Cliente;
+import br.com.bagarote.model.entity.Cliente;
 import br.com.bagarote.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

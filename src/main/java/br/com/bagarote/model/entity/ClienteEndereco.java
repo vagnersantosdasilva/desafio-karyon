@@ -1,4 +1,4 @@
-package br.com.bagarote.model;
+package br.com.bagarote.model.entity;
 
 import java.io.Serializable;
 

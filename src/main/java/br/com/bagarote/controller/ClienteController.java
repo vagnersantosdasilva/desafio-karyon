@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.bagarote.model.Cliente;
+import br.com.bagarote.model.entity.Cliente;
 import lombok.AllArgsConstructor;
 
 @RestController

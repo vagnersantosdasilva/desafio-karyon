@@ -1,11 +1,9 @@
 package br.com.bagarote.service;
 
-import br.com.bagarote.model.Empresa;
+import br.com.bagarote.model.entity.Empresa;
 import br.com.bagarote.repository.EmpresaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class EmpresaService {

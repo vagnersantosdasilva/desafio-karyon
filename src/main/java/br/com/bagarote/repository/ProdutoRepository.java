@@ -2,7 +2,7 @@ package br.com.bagarote.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.com.bagarote.model.Produto;
+import br.com.bagarote.model.entity.Produto;
 
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
