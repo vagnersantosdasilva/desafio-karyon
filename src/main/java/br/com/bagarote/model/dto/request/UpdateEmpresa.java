@@ -1,25 +1,25 @@
 package br.com.bagarote.model.dto.request;
 
-
-import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateEmpresaRequest {
+public class UpdateEmpresa {
 
     private static final long serialVersionUID = 1L;
+
+    @NotNull(message = "Id de Empresa não pode ser nulo. ")
+    private Long idEmpresa;
 
     @NotNull(message = "campoNulo")
     @NotEmpty(message = "campoEmBranco")

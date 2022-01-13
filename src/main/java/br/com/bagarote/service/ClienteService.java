@@ -4,6 +4,7 @@ import br.com.bagarote.exception.ResourceNotFoundException;
 import br.com.bagarote.model.dto.request.CreateCliente;
 import br.com.bagarote.model.dto.request.UpdateCliente;
 import br.com.bagarote.model.dto.response.ClienteResponse;
+import br.com.bagarote.model.dto.response.ClienteResumeResponse;
 import br.com.bagarote.model.dto.response.ProdutoResponse;
 import br.com.bagarote.model.entity.Cliente;
 import br.com.bagarote.model.entity.Produto;
@@ -28,10 +29,10 @@ public class ClienteService {
         this.modelMapper = modelMapper;
     }
 
-    public List<ClienteResponse> findAll() {
+    public List<ClienteResumeResponse> findAll() {
         return clienteRepository.findAll()
                 .stream()
-                .map(cliente-> modelMapper.map(cliente, ClienteResponse.class))
+                .map(cliente-> modelMapper.map(cliente, ClienteResumeResponse.class))
                 .collect(Collectors.toList());
     }
 

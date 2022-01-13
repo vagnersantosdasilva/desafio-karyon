@@ -1,7 +1,7 @@
 package br.com.bagarote.controller;
 import javax.validation.Valid;
-import br.com.bagarote.model.dto.request.CreateProdutoRequest;
-import br.com.bagarote.model.dto.request.UpdateProdutoRequest;
+import br.com.bagarote.model.dto.request.CreateProduto;
+import br.com.bagarote.model.dto.request.UpdateProduto;
 import br.com.bagarote.model.dto.response.ProdutoResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.bagarote.model.entity.Produto;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.stream.Collectors;
 
@@ -58,7 +57,7 @@ public class ProdutoController {
 
 	@PostMapping("produto")
 	public ResponseEntity<?> create(
-			@RequestBody  @Valid CreateProdutoRequest createProduto,
+			@RequestBody  @Valid CreateProduto createProduto,
 			BindingResult result
 	) throws Exception {
 		if (result.hasErrors()){
@@ -72,7 +71,7 @@ public class ProdutoController {
 	@PutMapping("produto/{idProduto}")
 	public ResponseEntity<?> update(
 			@PathVariable Long idProduto,
-			@RequestBody  @Valid  UpdateProdutoRequest updateProduto,
+			@RequestBody  @Valid UpdateProduto updateProduto,
 			BindingResult result
 	) throws Exception {
 

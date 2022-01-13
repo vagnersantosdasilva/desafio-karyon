@@ -1,5 +1,7 @@
 package br.com.bagarote.model.entity;
 
+import lombok.*;
+
 import java.io.Serializable;
 
 import javax.persistence.Entity;
@@ -10,11 +12,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 @Entity
 public class ClienteEndereco implements Serializable{
+
 	private static final long serialVersionUID = 1L;
 	@Id
 	@SequenceGenerator(name = "SequenceEnderecoCliente", sequenceName = "SEQ_ENDERECO", allocationSize = 1)

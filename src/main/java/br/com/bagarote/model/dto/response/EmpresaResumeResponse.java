@@ -5,18 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmpresaResponse {
+public class EmpresaResumeResponse {
 
     private Long idEmpresa;
     private String nomeFantasia;
-    private String razaoSocial;
-    private String cnpj;
-    private String responsavelLegal;
-    private String telefone;
+
 }

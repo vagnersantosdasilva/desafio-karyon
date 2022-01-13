@@ -1,7 +1,7 @@
 package br.com.bagarote.model.converter;
 
-import br.com.bagarote.model.dto.request.CreateProdutoRequest;
-import br.com.bagarote.model.dto.request.UpdateProdutoRequest;
+import br.com.bagarote.model.dto.request.CreateProduto;
+import br.com.bagarote.model.dto.request.UpdateProduto;
 import br.com.bagarote.model.dto.response.ProdutoResponse;
 import br.com.bagarote.model.entity.Empresa;
 import br.com.bagarote.model.entity.Produto;
@@ -15,9 +15,9 @@ import java.util.Objects;
 @Getter
 @Component
 public class ProdutoConverter {
-    Converter<CreateProdutoRequest,Produto> createProdutoToProduto = new Converter<CreateProdutoRequest, Produto>(){
+    Converter<CreateProduto,Produto> createProdutoToProduto = new Converter<CreateProduto, Produto>(){
         @Override
-        public Produto convert(MappingContext<CreateProdutoRequest, Produto> mappingContext) {
+        public Produto convert(MappingContext<CreateProduto, Produto> mappingContext) {
             return Produto.builder()
                     .produto(mappingContext.getSource().getProduto())
                     .imagemProduto(mappingContext.getSource().getImagemProdutoByte())
@@ -42,9 +42,9 @@ public class ProdutoConverter {
         }
     };
 
-    Converter<UpdateProdutoRequest,Produto> updateProdutoToProduto = new Converter<UpdateProdutoRequest, Produto>(){
+    Converter<UpdateProduto,Produto> updateProdutoToProduto = new Converter<UpdateProduto, Produto>(){
         @Override
-        public Produto convert(MappingContext<UpdateProdutoRequest, Produto> mappingContext) {
+        public Produto convert(MappingContext<UpdateProduto, Produto> mappingContext) {
             return Produto.builder()
                     .idProduto(mappingContext.getSource().getIdProduto())
                     .produto(mappingContext.getSource().getProduto())

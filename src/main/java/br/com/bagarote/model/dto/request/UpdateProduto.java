@@ -15,12 +15,14 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateProdutoRequest {
+public class UpdateProduto {
 
-    @NotNull(message = "campoNulo")
-    @NotEmpty(message = "campoEmBranco")
+    @NotNull(message = "Campo idProduto não pode ser nulo. ")
+    private Long idProduto;
+
+    @NotNull(message = "Campo produto não pode ser nulo. ")
+    @NotEmpty(message = "Campo produto não pode ser vazio. ")
     private String produto;
-
 
     private String descricao;
 
@@ -28,8 +30,7 @@ public class CreateProdutoRequest {
 
     private String imagemProduto;
 
-    @NotNull(message = "campoNulo")
-    @NotEmpty(message = "campoEmBranco")
+    @NotNull(message = "Campo idEmpresa não pode ser nulo. ")
     private Long idEmpresa;
 
     public byte[] getImagemProdutoByte() {
@@ -37,4 +38,5 @@ public class CreateProdutoRequest {
             return Base64.getDecoder().decode(this.imagemProduto);
         return null;
     }
+
 }

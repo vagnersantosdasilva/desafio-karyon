@@ -3,10 +3,9 @@ package br.com.bagarote.model.converter;
 import br.com.bagarote.model.dto.request.CreateCliente;
 import br.com.bagarote.model.dto.request.UpdateCliente;
 import br.com.bagarote.model.dto.response.ClienteResponse;
-import br.com.bagarote.model.dto.response.ProdutoResponse;
+import br.com.bagarote.model.dto.response.ClienteResumeResponse;
 import br.com.bagarote.model.entity.Cliente;
 import br.com.bagarote.model.entity.Empresa;
-import br.com.bagarote.model.entity.Produto;
 import lombok.Getter;
 import org.modelmapper.Converter;
 import org.modelmapper.spi.MappingContext;
@@ -17,7 +16,6 @@ import java.util.Objects;
 @Component
 public class ClienteConverter {
     Converter<CreateCliente, Cliente> createClienteToCliente = new Converter<CreateCliente, Cliente>(){
-
         @Override
         public Cliente convert(MappingContext<CreateCliente, Cliente> mappingContext) {
             return Cliente.builder()
@@ -51,6 +49,16 @@ public class ClienteConverter {
                     .empresa( Objects.nonNull(mappingContext.getSource().getIdEmpresa()) ? Empresa.builder().idEmpresa(mappingContext.getSource().getIdEmpresa()).build() : null )
                     .cpf(mappingContext.getSource().getCpf())
                     .telefone(mappingContext.getSource().getTelefone())
+                    .nome(mappingContext.getSource().getNome())
+                    .build();
+        }
+    };
+
+    Converter<Cliente, ClienteResumeResponse> clienteToClienteResumeResponse = new Converter< Cliente,ClienteResumeResponse>(){
+        @Override
+        public ClienteResumeResponse convert(MappingContext<Cliente, ClienteResumeResponse> mappingContext) {
+            return ClienteResumeResponse.builder()
+                    .idCliente(mappingContext.getSource().getIdCliente())
                     .nome(mappingContext.getSource().getNome())
                     .build();
         }
