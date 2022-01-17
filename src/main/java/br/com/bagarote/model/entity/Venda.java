@@ -40,6 +40,7 @@ public class Venda implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "ID_EMPRESA")
 	private Empresa empresa;
+
 	@Column(name = "DT_VENDA")
 	private LocalDateTime dataVenda;
 
@@ -47,6 +48,7 @@ public class Venda implements Serializable{
 	private BigDecimal valorDesconto;
 	private BigDecimal valorAcrescimo;
 	private BigDecimal valorPago;
+
 	@Enumerated(EnumType.STRING)
 	private MetodoPagamento metodoPagamento;
 	

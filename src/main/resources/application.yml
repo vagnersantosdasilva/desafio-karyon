@@ -19,3 +19,8 @@ spring:
     username: ${DATASOURCE_USERNAME:admin}
     password: ${DATASOURCE_PASSWORD:abc@123}
     driver-class-name: org.postgresql.Driver
+
+  # swagger-ui custom path
+  springdoc:
+    swagger-ui:
+      path: /swagger-ui.html

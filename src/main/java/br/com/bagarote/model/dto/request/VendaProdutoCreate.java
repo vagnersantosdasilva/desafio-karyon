@@ -1,4 +1,4 @@
-package br.com.bagarote.model.dto.response;
+package br.com.bagarote.model.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,18 +7,14 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class VendaProdutoResponse {
-
+public class VendaProdutoCreate {
     private Long idVenda;
     private Long idProduto;
-    private String produto;
-    private BigDecimal valorUnitario;
     private Integer quantidade;
+    private BigDecimal valorUnitario;
     private BigDecimal valorTotal;
-
 }

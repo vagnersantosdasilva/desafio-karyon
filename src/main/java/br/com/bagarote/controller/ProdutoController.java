@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import br.com.bagarote.service.ProdutoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ public class ProdutoController {
 	}
 
 	@GetMapping("produto")
+	@PreAuthorize("hasAuthority('ADMINISTRADOR') or hasAuthority('VENDEDOR')")
 	public ResponseEntity<?> getAll() {
 
 		return ResponseEntity
@@ -50,12 +52,14 @@ public class ProdutoController {
 
     }
 
+	@PreAuthorize("hasAuthority('ADMINISTRADOR') or hasAuthority('VENDEDOR')")
 	@GetMapping("produto/{idProduto}")
 	public ResponseEntity<?> getByIdProduto(@PathVariable Long idProduto) {
 		return ResponseEntity.ok().body(produtoService.findById(idProduto));
     }
 
 	@PostMapping("produto")
+	@PreAuthorize("hasAuthority('ADMINISTRADOR')")
 	public ResponseEntity<?> create(
 			@RequestBody  @Valid CreateProduto createProduto,
 			BindingResult result
@@ -68,6 +72,7 @@ public class ProdutoController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+	@PreAuthorize("hasAuthority('ADMINISTRADOR')")
 	@PutMapping("produto/{idProduto}")
 	public ResponseEntity<?> update(
 			@PathVariable Long idProduto,

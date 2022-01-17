@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 public class VendaProduto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	@EmbeddedId
 	@EqualsAndHashCode.Include
 	private VendaProdutoId vendaProdutoId;
@@ -42,6 +43,16 @@ public class VendaProduto implements Serializable {
 		@ManyToOne
 		@JoinColumn(name = "ID_PRODUTO")
 		private Produto produto;
+	}
+
+	public void printObject(){
+		System.out.println(this.getValorTotal());
+		System.out.println(this.getVendaProdutoId().getProduto().getIdProduto());
+		System.out.println(this.getVendaProdutoId().getVenda().getIdVenda());
+		System.out.println(this.getQtd());
+		System.out.println(this.getValorUnitario());
+
+
 	}
 	
 }

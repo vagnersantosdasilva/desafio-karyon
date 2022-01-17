@@ -8,6 +8,7 @@ import br.com.bagarote.service.ClienteService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,16 +29,19 @@ public class ClienteController {
 	private final ClienteService clienteService;
 	
 	@GetMapping("cliente")
+	@PreAuthorize("hasRole('ADMINISTRADOR') or hasAnyRole('VENDEDOR')")
 	public ResponseEntity<?> getAll() {
 	    return ResponseEntity.ok().body(clienteService.findAll());
     }
 
 	@GetMapping("cliente/{idCliente}")
+	@PreAuthorize("hasAuthority('ADMINISTRADOR') or hasAuthority('VENDEDOR')")
 	public ResponseEntity<?> getByIdCliente(@PathVariable Long idCliente) throws ResourceNotFoundException {
 	    return ResponseEntity.ok().body(clienteService.findById(idCliente));
     }
 
 	@PostMapping("cliente")
+	@PreAuthorize("hasAuthority('ADMINISTRADOR')")
 	public ResponseEntity<?> create(@RequestBody @Valid CreateCliente createCliente,BindingResult result) throws Exception {
 	    if (result.hasErrors()) throw new Exception(result.getAllErrors().get(0).getDefaultMessage());
 
@@ -45,6 +49,7 @@ public class ClienteController {
     }
 	
 	@PutMapping("cliente/{idCliente}")
+	@PreAuthorize("hasAuthority('ADMINISTRADOR')")
 	public ResponseEntity<?> update(@PathVariable Long idCliente,@RequestBody  @Valid UpdateCliente updateCliente, BindingResult result) throws Exception {
 		if (result.hasErrors()) throw new Exception(result.getAllErrors().get(0).getDefaultMessage());
 		ClienteResponse response = clienteService.update(idCliente,updateCliente);

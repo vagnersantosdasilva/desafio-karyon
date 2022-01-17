@@ -1,6 +1,7 @@
 package br.com.bagarote.service;
 
 import br.com.bagarote.model.dto.request.UpdateProduto;
+import br.com.bagarote.model.dto.response.ProdutoResponse;
 import br.com.bagarote.model.entity.Produto;
 import br.com.bagarote.repository.EmpresaRepository;
 import br.com.bagarote.repository.ProdutoRepository;
@@ -29,8 +30,8 @@ public class ProdutoService {
         return produtoRepository.findAll();
     }
 
-    public Produto findById(Long idProduto) {
-        return produtoRepository.findById(idProduto).orElse(null);
+    public ProdutoResponse findById(Long idProduto) {
+        return modelMapper.map(produtoRepository.findById(idProduto).orElse(null), ProdutoResponse.class);
     }
 
 

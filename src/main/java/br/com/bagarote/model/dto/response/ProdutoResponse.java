@@ -16,7 +16,7 @@ public class ProdutoResponse {
     private Long idProduto;
     private String produto;
     private String descricao;
-    private BigDecimal valor;
+    private BigDecimal valorBase;
     private String imagemProduto;
     private Long idEmpresa;
 }

@@ -3,6 +3,7 @@ package br.com.bagarote.model.converter;
 import br.com.bagarote.model.dto.request.CreateProduto;
 import br.com.bagarote.model.dto.request.UpdateProduto;
 import br.com.bagarote.model.dto.response.ProdutoResponse;
+import br.com.bagarote.model.dto.response.ProdutoResumeResponse;
 import br.com.bagarote.model.entity.Empresa;
 import br.com.bagarote.model.entity.Produto;
 import lombok.Getter;
@@ -36,7 +37,7 @@ public class ProdutoConverter {
                     .produto(mappingContext.getSource().getProduto())
                     .imagemProduto(mappingContext.getSource().getImagemProdutoBase64())
                     .descricao(mappingContext.getSource().getDescricao())
-                    .valor(mappingContext.getSource().getValorBase())
+                    .valorBase(mappingContext.getSource().getValorBase())
                     .idEmpresa(mappingContext.getSource().getEmpresa().getIdEmpresa())
                     .build();
         }
@@ -52,6 +53,16 @@ public class ProdutoConverter {
                     .descricao(mappingContext.getSource().getDescricao())
                     .valorBase(mappingContext.getSource().getValor())
                     .empresa( Objects.nonNull(mappingContext.getSource().getIdEmpresa()) ? Empresa.builder().idEmpresa(mappingContext.getSource().getIdEmpresa()).build() : null )
+                    .build();
+        }
+    };
+
+    Converter<Produto, ProdutoResumeResponse> produtoToProdutoResumeResponse = new Converter< Produto,ProdutoResumeResponse>(){
+        @Override
+        public ProdutoResumeResponse convert(MappingContext<Produto,ProdutoResumeResponse> mappingContext) {
+            return ProdutoResumeResponse.builder()
+                    .idProduto(mappingContext.getSource().getIdProduto())
+                    .produto(mappingContext.getSource().getProduto())
                     .build();
         }
     };
