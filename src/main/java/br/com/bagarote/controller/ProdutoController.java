@@ -1,5 +1,7 @@
 package br.com.bagarote.controller;
 import javax.validation.Valid;
+
+import br.com.bagarote.exception.MessageError;
 import br.com.bagarote.model.dto.request.CreateProduto;
 import br.com.bagarote.model.dto.request.UpdateProduto;
 import br.com.bagarote.model.dto.response.ProdutoResponse;
@@ -53,6 +55,14 @@ public class ProdutoController {
     }
 
 	@PreAuthorize("hasAuthority('ADMINISTRADOR') or hasAuthority('VENDEDOR')")
+	@GetMapping("empresa/{idEmpresa}/produto")
+	public ResponseEntity<?> getProdutosByIdProduto(@PathVariable Long idEmpresa) {
+
+		return ResponseEntity.ok().body(produtoService.findProdutosByEmpresa(idEmpresa));
+	}
+
+
+	@PreAuthorize("hasAuthority('ADMINISTRADOR') or hasAuthority('VENDEDOR')")
 	@GetMapping("produto/{idProduto}")
 	public ResponseEntity<?> getByIdProduto(@PathVariable Long idProduto) {
 		return ResponseEntity.ok().body(produtoService.findById(idProduto));
@@ -64,9 +74,7 @@ public class ProdutoController {
 			@RequestBody  @Valid CreateProduto createProduto,
 			BindingResult result
 	) throws Exception {
-		if (result.hasErrors()){
-			throw new Exception(result.getAllErrors().get(0).getDefaultMessage());
-		}
+		MessageError.messageError(result);
 		Produto produto = modelMapper.map(createProduto, Produto.class);
 		ProdutoResponse response = modelMapper.map(produtoService.create(produto), ProdutoResponse.class);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -79,10 +87,7 @@ public class ProdutoController {
 			@RequestBody  @Valid UpdateProduto updateProduto,
 			BindingResult result
 	) throws Exception {
-
-		if (result.hasErrors()){
-			throw new Exception(result.getAllErrors().get(0).getDefaultMessage());
-		}
+		MessageError.messageError(result);
 		ProdutoResponse response = modelMapper.map(produtoService.update(idProduto,updateProduto), ProdutoResponse.class);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
     }

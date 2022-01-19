@@ -36,7 +36,7 @@ public class EmpresaConverter {
                     .nomeFantasia(mappingContext.getSource().getNomeFantasia())
                     .razaoSocial(mappingContext.getSource().getRazaoSocial())
                     .telefone(mappingContext.getSource().getTelefone())
-                    .responsavelLegal(mappingContext.getSource().getRepresentanteLegal())
+                    .responsavelLegal(mappingContext.getSource().getResponsavelLegal())
                     .build();
         }
     };

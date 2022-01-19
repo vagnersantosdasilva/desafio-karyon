@@ -22,18 +22,25 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateVenda {
 
-    @NotNull(message = "campoNulo")
+    @NotNull(message = "Id de Cliente não pode ser nulo")
     private Long idCliente;
 
-    @NotNull(message = "campoNulo")
+    @NotNull(message = "Id de Empresa não pode ser nulo")
     private Long idEmpresa;
 
+    @Pattern( regexp = "\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}" , message = "Formato de Data fora do padrão esperado")
     private String dataVenda;
+
+
     private BigDecimal valorTotal;
     private BigDecimal valorDesconto;
     private BigDecimal valorAcrescimo;
     private BigDecimal valorPago;
+
     private String metodoPagamento;
+
+    @NotNull(message="Lista de produtos não deve ser nula")
+    @NotEmpty(message="Lista de produto não deve ser vazia")
     private List<VendaProdutoCreate> produtos;
     //private List<VendaProduto> produtos;
 

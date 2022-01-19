@@ -19,34 +19,24 @@ public class CreateEmpresa {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull(message = "campoNulo")
-    @NotEmpty(message = "campoEmBranco")
-    @NotBlank(message = "campoEmBranco")
-    @Size(min = 5, max = 50, message = "tamanhoCampo")
+    @NotNull(message = "Nome fantasia nulo")
+    @Size(min = 5, max = 50, message = "Tamanho de campo incorreto")
     private String nomeFantasia;
 
-    @NotNull(message = "campoNulo")
-    @NotEmpty(message = "campoEmBranco")
-    @NotBlank(message = "campoEmBranco")
-    @Size(min = 5, max = 100, message = "tamanhoCampo")
+    @NotNull(message = "Campo Nulo")
+    @Size(min = 5, max = 100,  message = "Tamanho de campo incorreto")
     private String razaoSocial;
 
-    @NotNull(message = "campoNulo")
-    @NotEmpty(message = "campoEmBranco")
-    @NotBlank(message = "campoEmBranco")
-    @Size(min = 14, max = 14, message = "tamanhoCampo")
+    @NotNull(message = "Campo Nulo")
+    @Size(min = 11, max = 11,  message = "Tamanho de campo incorreto")
     private String cnpj;
 
-    @NotNull(message = "campoNulo")
-    @NotEmpty(message = "campoEmBranco")
-    @NotBlank(message = "campoEmBranco")
-    @Size(min = 5, max = 60, message = "tamanhoCampo")
+    @NotNull(message = "Campo Nulo")
+    @Size(min = 5, max = 60,  message = "Tamanho de campo incorreto")
     private String responsavelLegal;
 
     @NotNull(message = "campoNulo")
-    @NotEmpty(message = "campoEmBranco")
-    @NotBlank(message = "campoEmBranco")
-    @Size(min = 11, max = 11, message = "tamanhoCampo")
+    @Size(min = 11, max = 11,  message = "Tamanho de campo incorreto")
     private String telefone;
 
 

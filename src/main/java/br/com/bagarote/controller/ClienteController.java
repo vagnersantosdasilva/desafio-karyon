@@ -1,5 +1,6 @@
 package br.com.bagarote.controller;
 
+import br.com.bagarote.exception.MessageError;
 import br.com.bagarote.exception.ResourceNotFoundException;
 import br.com.bagarote.model.dto.request.CreateCliente;
 import br.com.bagarote.model.dto.request.UpdateCliente;
@@ -29,7 +30,7 @@ public class ClienteController {
 	private final ClienteService clienteService;
 	
 	@GetMapping("cliente")
-	@PreAuthorize("hasRole('ADMINISTRADOR') or hasAnyRole('VENDEDOR')")
+	@PreAuthorize("hasRole('ADMINISTRADOR') or hasAuthority('VENDEDOR')")
 	public ResponseEntity<?> getAll() {
 	    return ResponseEntity.ok().body(clienteService.findAll());
     }
@@ -43,15 +44,14 @@ public class ClienteController {
 	@PostMapping("cliente")
 	@PreAuthorize("hasAuthority('ADMINISTRADOR')")
 	public ResponseEntity<?> create(@RequestBody @Valid CreateCliente createCliente,BindingResult result) throws Exception {
-	    if (result.hasErrors()) throw new Exception(result.getAllErrors().get(0).getDefaultMessage());
-
+		MessageError.messageError(result);
 		return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.create(createCliente));
     }
 	
 	@PutMapping("cliente/{idCliente}")
 	@PreAuthorize("hasAuthority('ADMINISTRADOR')")
 	public ResponseEntity<?> update(@PathVariable Long idCliente,@RequestBody  @Valid UpdateCliente updateCliente, BindingResult result) throws Exception {
-		if (result.hasErrors()) throw new Exception(result.getAllErrors().get(0).getDefaultMessage());
+		MessageError.messageError(result);
 		ClienteResponse response = clienteService.update(idCliente,updateCliente);
 		return ResponseEntity.status(HttpStatus.OK).body(response) ;
     }

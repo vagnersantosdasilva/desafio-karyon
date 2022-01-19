@@ -1,84 +1,90 @@
 package br.com.bagarote.service;
 
+import br.com.bagarote.exception.BusinessRuleException;
 import br.com.bagarote.model.dto.request.CreateVenda;
+import br.com.bagarote.model.dto.request.CreateVendaProduto;
 import br.com.bagarote.model.dto.request.VendaProdutoCreate;
-import br.com.bagarote.model.dto.response.EmpresaResumeResponse;
 import br.com.bagarote.model.dto.response.VendaDetailsResponse;
 import br.com.bagarote.model.dto.response.VendaProdutoResponse;
 import br.com.bagarote.model.dto.response.VendaResponse;
 import br.com.bagarote.model.entity.*;
-import br.com.bagarote.repository.ProdutoRepository;
-import br.com.bagarote.repository.VendaProdutoRepository;
-import br.com.bagarote.repository.VendaRepository;
+import br.com.bagarote.repository.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class VendaService {
 
     private VendaRepository vendaRepository;
     private ModelMapper modelMapper;
     private ProdutoRepository produtoRepository;
     private VendaProdutoRepository vendaProdutoRepository;
+    private EmpresaRepository empresaRepository;
+    private ClienteRepository clienteRepository;
 
-    public VendaService(VendaRepository vendaRepository,
+    public VendaService(@Lazy VendaRepository vendaRepository,
                         ModelMapper modelMapper,
-                        ProdutoRepository produtoRepository,
-                        VendaProdutoRepository vendaProdutoRepository
-    ){
+                        @Lazy ProdutoRepository produtoRepository,
+                        @Lazy VendaProdutoRepository vendaProdutoRepository,
+                        @Lazy EmpresaRepository empresaRepository, ClienteRepository clienteRepository){
+
         this.vendaRepository = vendaRepository;
         this.modelMapper = modelMapper;
         this.produtoRepository = produtoRepository;
         this.vendaProdutoRepository =vendaProdutoRepository;
+        this.empresaRepository = empresaRepository;
+        this.clienteRepository = clienteRepository;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class, RuntimeException.class})
-    public VendaResponse create(CreateVenda createVenda){
-
-        List<VendaProdutoCreate> vendasProdutos = createVenda.getProdutos();
-        Double valorTotal = getValorTotal(vendasProdutos);
-        createVenda.setValorTotal(BigDecimal.valueOf(valorTotal));
-        Venda venda = modelMapper.map(createVenda,Venda.class);
-        Venda vendaSalva = vendaRepository.save(venda);
-        VendaResponse response = modelMapper.map(vendaSalva,VendaResponse.class);
-        List<VendaProdutoCreate> vendasProdutoCreate = populoarVendaProduto(vendasProdutos,vendaSalva.getIdVenda());
-        System.out.println("vendasProdutoCreate size"+vendasProdutoCreate.size());
-        saveListVendaProduto(response,vendasProdutoCreate);
-        return response;
+    public VendaResponse create(CreateVenda createVenda) throws BusinessRuleException {
+        if (isValidRoles(createVenda)) {
+            List<VendaProdutoCreate> vendasProdutos = createVenda.getProdutos();
+            Double valorTotal = getValorTotal(vendasProdutos);
+            createVenda.setValorTotal(BigDecimal.valueOf(valorTotal));
+            Venda venda = modelMapper.map(createVenda, Venda.class);
+            Venda vendaSalva = vendaRepository.save(venda);
+            VendaResponse response = modelMapper.map(vendaSalva, VendaResponse.class);
+            List<VendaProdutoCreate> vendasProdutoCreate = populoarVendaProduto(vendasProdutos, vendaSalva.getIdVenda());
+            System.out.println("vendasProdutoCreate size" + vendasProdutoCreate.size());
+            saveListVendaProduto(response, vendasProdutoCreate);
+            return response;
+        }
+        return null;
     }
 
     private void saveListVendaProduto(VendaResponse venda,List<VendaProdutoCreate> list){
         for(VendaProdutoCreate vpc:list){
             VendaProduto vp = new VendaProduto();
+
             Venda v = new Venda();
             v.setIdVenda(venda.getIdVenda());
             Produto p =new Produto();
             p.setIdProduto(vpc.getIdProduto());
+
             VendaProduto.VendaProdutoId vpid = new VendaProduto.VendaProdutoId();
-            //vp.getVendaProdutoId().setProduto(Produto.builder().idProduto(vpc.getIdProduto()).build());
-            //vp.getVendaProdutoId().setVenda(Venda.builder().idVenda(venda.getIdVenda()).build());
             vpid.setVenda(v);
             vpid.setProduto(p);
+
             vp.setVendaProdutoId(vpid);
             vp.setValorTotal(vpc.getValorTotal());
             vp.setQtd(vpc.getQuantidade());
             vp.setValorUnitario(vpc.getValorUnitario());
+
             System.out.println("ID Venda :" +vp.getVendaProdutoId().getVenda().getIdVenda());
             System.out.println("ID Produ :" +vp.getVendaProdutoId().getProduto().getIdProduto());
 
@@ -86,6 +92,53 @@ public class VendaService {
         }
 
 
+    }
+
+    public Boolean isValidRoles(CreateVenda venda) throws BusinessRuleException {
+        checkClienteEmpresa(venda.getIdCliente(),venda.getIdEmpresa());
+        checkProdutos(venda.getProdutos(),venda.getIdEmpresa());
+        checkMetodoPagamento(venda.getMetodoPagamento().getMetodoPagamento());
+
+        return true;
+    }
+
+    public void checkClienteEmpresa(Long idCliente,Long idEmpresa) throws BusinessRuleException {
+        try{
+            Cliente cliente = clienteRepository.getById(idCliente);
+            if ((cliente ==null)||
+                    (!cliente.getEmpresa().getIdEmpresa().equals(idEmpresa)))
+                throw new BusinessRuleException("Erro de regra de negócio. Cliente não pertence a empresa.");
+        }
+        catch(EntityNotFoundException ex){
+            throw new BusinessRuleException("Erro de regra de negócio. Cliente informado não existe.");
+        }
+
+    }
+
+    public void checkProdutos(List<VendaProdutoCreate> produtos,Long idEmpresa) throws BusinessRuleException {
+
+        if (produtos.size()<=0)
+            throw new BusinessRuleException("Erro de regra de negócio. Lista de produto não pode ser vazia.");
+
+        for (VendaProdutoCreate vpc : produtos){
+            Produto p = produtoRepository.findById(vpc.getIdProduto()).orElse(null);
+            if (p ==null) throw new BusinessRuleException("Produto de ID "+vpc.getIdProduto()+" não existe. ");
+            if (!p.getEmpresa().getIdEmpresa().equals(idEmpresa))
+                throw new BusinessRuleException("Erro de regra de negócio. Produto não pertence a empresa");
+            if (vpc.getQuantidade() <=0) throw new BusinessRuleException("Erro de regra de negócio. Quantidade de um produto deve ser maior que zero");
+        }
+    }
+
+    public void checkMetodoPagamento(String metodo) throws BusinessRuleException {
+        if (metodo==null)
+            throw new BusinessRuleException("Erro de regra de negócios. Método de pagamento inexistente");
+        try
+        {
+            MetodoPagamento.valueOf(metodo);
+        }
+        catch(IllegalArgumentException ix) {
+            throw new BusinessRuleException("Erro de regra de negócios. Método de pagamento inexistente");
+        }
     }
 
     private Double getValorTotal (List<VendaProdutoCreate> produtos){
@@ -126,9 +179,9 @@ public class VendaService {
 
     public PageImpl vendaByClienteAndEnpresa(Pageable pageable, Long idCliente, Long idEmpresa){
         Page<Venda> result = vendaRepository.findVendaByClienteEmpresa(idCliente,idEmpresa,pageable);
-        PageImpl vendasPaginadas = new PageImpl<VendaDetailsResponse>(
+        PageImpl vendasPaginadas = new PageImpl<VendaResponse>(
                 result.getContent().stream()
-                        .map(venda-> modelMapper.map(venda, VendaDetailsResponse.class))
+                        .map(venda-> modelMapper.map(venda, VendaResponse.class))
                         .collect(Collectors.toList()), pageable, result.getTotalElements());
         return vendasPaginadas;
 

@@ -1,5 +1,6 @@
 package br.com.bagarote.controller;
 
+import br.com.bagarote.exception.MessageError;
 import br.com.bagarote.model.dto.request.CreateVenda;
 import br.com.bagarote.service.VendaService;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import br.com.bagarote.model.entity.Venda;
 import lombok.AllArgsConstructor;
@@ -21,19 +23,15 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class VendaController {
 	
-	//private final VendaRepository vendaRepository;
+
 	private final VendaService vendaService;
 	
-	/*@GetMapping("venda")
-	public ResponseEntity<?> getAll() {
-	    return ResponseEntity.ok().body(vendaService.findAll());
-    }
-	*/
+
 	@PostMapping("venda")
 	@PreAuthorize("hasAuthority('ADMINISTRADOR') or hasAuthority('VENDEDOR')")
 	public ResponseEntity<?> create(@RequestBody @Valid CreateVenda createVendaRequest, BindingResult result) throws Exception {
 
-		if (result.hasErrors()) throw new Exception(result.getAllErrors().get(0).getDefaultMessage());
+		MessageError.messageError(result);
 		return ResponseEntity.status(HttpStatus.CREATED).body(vendaService.create(createVendaRequest));
     }
 	@GetMapping("venda/{idVenda}")

@@ -1,0 +1,16 @@
+{
+    "idEmpresa": 3,
+    "idCliente": 1,
+    "dataVenda": "2022-01-04 08:10:25" ,
+    "metodoPagamento": "PENDENTE",
+    "produtos": [
+    {
+        "idProduto": 6,
+        "quantidade": 4
+    },
+    {
+        "idProduto": 4,
+        "quantidade": 1
+    }
+]
+}

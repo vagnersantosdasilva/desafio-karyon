@@ -21,34 +21,34 @@ public class UpdateEmpresa {
     @NotNull(message = "Id de Empresa não pode ser nulo. ")
     private Long idEmpresa;
 
-    @NotNull(message = "campoNulo")
-    @NotEmpty(message = "campoEmBranco")
-    @NotBlank(message = "campoEmBranco")
-    @Size(min = 5, max = 50, message = "tamanhoCampo")
+    @NotNull(message = "campo Nulo")
+    @NotEmpty(message = "campo Em Branco")
+    @NotBlank(message = "campo Em Branco")
+    @Size(min = 5, max = 50,  message = "Tamanho de campo incorreto")
     private String nomeFantasia;
 
-    @NotNull(message = "campoNulo")
-    @NotEmpty(message = "campoEmBranco")
-    @NotBlank(message = "campoEmBranco")
-    @Size(min = 5, max = 100, message = "tamanhoCampo")
+    @NotNull(message = "campo Nulo")
+    @NotEmpty(message = "campo Em Branco")
+    @NotBlank(message = "campo Em Branco")
+    @Size(min = 5, max = 100,  message = "Tamanho de campo incorreto")
     private String razaoSocial;
 
-    @NotNull(message = "campoNulo")
-    @NotEmpty(message = "campoEmBranco")
-    @NotBlank(message = "campoEmBranco")
-    @Size(min = 14, max = 14, message = "tamanhoCampo")
+    @NotNull(message = "campo Nulo")
+    @NotEmpty(message = "campo Em Branco")
+    @NotBlank(message = "campo Em Branco")
+    @Size(min = 11, max = 11,  message = "Tamanho de campo incorreto")
     private String cnpj;
 
-    @NotNull(message = "campoNulo")
-    @NotEmpty(message = "campoEmBranco")
-    @NotBlank(message = "campoEmBranco")
+    @NotNull(message = "campo Nulo")
+    @NotEmpty(message = "campo Em Branco")
+    @NotBlank(message = "campo Em Branco")
     @Size(min = 5, max = 60, message = "tamanhoCampo")
-    private String representanteLegal;
+    private String responsavelLegal;
 
-    @NotNull(message = "campoNulo")
-    @NotEmpty(message = "campoEmBranco")
-    @NotBlank(message = "campoEmBranco")
-    @Size(min = 11, max = 11, message = "tamanhoCampo")
+    @NotNull(message = "campo Nulo")
+    @NotEmpty(message = "campo Em Branco")
+    @NotBlank(message = "campo Em Branco")
+    @Size(min = 11, max = 11,  message = "Tamanho de campo incorreto")
     private String telefone;
 
 
